@@ -1,0 +1,16 @@
+career-ops HK overlay
+SPDX-License-Identifier: MIT
+
+This tree is a Hong Kong / APAC overlay for career-ops. It helps other people
+run that system against Hong Kong boards, with extra gates so nothing is
+submitted until the operator says so. It is not a personal fork dump and it
+is not an official career-ops product.
+
+Based on / derived from career-ops:
+  https://github.com/career-ops-hq/career-ops
+
+career-ops is licensed under the MIT License.
+Copyright (c) 2026 Santiago Fernández de Valderrama
+
+The MIT license text is in the LICENSE file in this tree. Do not relicense
+this overlay. Keep this NOTICE with any copy that includes the overlay.

@@ -1,0 +1,14 @@
+# Example only. This file ships no real Notion page or data-source id.
+# Copy the values into your environment. Do not commit a real id or a token.
+#
+#   export NOTION_HUNT_DATA_SOURCE_ID=replace-me
+#   export NOTION_HUNT_BOARD_PAGE_URL=https://www.notion.so/replace-me
+#   export NOTION_HUNT_STATUS_MAP_URL=https://www.notion.so/replace-me
+#
+# The integration token belongs in .env as NOTION_ACCESS_TOKEN.
+# Code reads the data-source id from NOTION_HUNT_DATA_SOURCE_ID only.
+
+notion_hunt:
+  data_source_id: replace-me
+  board_page_url: https://www.notion.so/replace-me
+  status_map_url: https://www.notion.so/replace-me

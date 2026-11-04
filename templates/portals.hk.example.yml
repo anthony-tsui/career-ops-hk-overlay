@@ -1,0 +1,376 @@
+# Example Hong Kong portal seed for a career-ops HK/APAC overlay.
+# Copy to portals.yml in your career-ops checkout (that file stays gitignored).
+# Replace YOUR_FLOOR_HKD_YEAR and YOUR_TARGET_HKD_YEAR with your own annual HKD figures.
+# Do not HTTP-scrape LinkedIn or eFinancialCareers. eCareer HK is a paste-only seed.
+
+# Employment preference — Slice D (scan + eval gates; contract/temp → Review, never silent drop).
+employment_filter:
+  enabled: true
+  prefer: permanent_ft
+
+# Agency / Big4 — demote to Review unless JD/title shows clear AI signals (portals stay enabled).
+agency_filter:
+  enabled: true
+  demote_unless_ai: true
+  big4:
+    # Matcher uses token/phrase aliases in lib/hk-scan-filters.mjs (EY → Ernst & Young / EY token; PwC → PricewaterhouseCoopers / PwC / Price Waterhouse).
+    - Deloitte
+    - PwC
+    - EY
+    - KPMG
+  agency_companies:
+    - Michael Page
+    - Hays
+    - Robert Walters
+    - Morgan McKinley
+    - Randstad
+    - Ambition
+    - Oliver James
+  ai_signals:
+    - "AI transformation"
+    - "digital transformation"
+    - GenAI
+    - "customer AI"
+    - "solutions architect"
+    - "solutions delivery"
+    - "delivery lead"
+    - "transformation lead"
+    - "word:AI"
+
+# -- Location: Hong Kong only (always_allow still catches HK variants in titles) --
+location_filter:
+  always_allow:
+    - "Hong Kong"
+    - "HK"
+    - "Kowloon"
+    - "Hong Kong SAR"
+  allow:
+    - "Hong Kong"
+    - "HK"
+  block:
+    - "United States"
+    - "USA"
+    - "United Kingdom"
+    - "London"
+    - "Germany"
+    - "France"
+    - "India"
+    - "Bengaluru"
+    - "Brazil"
+    - "Australia"
+    - "Singapore"
+    - "Remote"
+    - "APAC"
+    - "Asia"
+  block_hard:
+    - "United States"
+    - "United Kingdom"
+    - "India"
+    - "Europe"
+    - "Singapore"
+    - "Remote"
+
+# Matching only. Never print salary on a CV.
+# Replace both placeholders with your own annual HKD numbers before scanning.
+# They are not anyone's personal compensation claim.
+salary_filter:
+  min: YOUR_FLOOR_HKD_YEAR
+  max: 0
+  currency: "HKD"
+  target: YOUR_TARGET_HKD_YEAR
+
+max_posting_age_days: 45
+
+title_filter:
+  skip_tiers: [intern, entry]
+  positive:
+    # Primary — AI transformation / solutions / delivery
+    - "AI Transformation"
+    - "Artificial Intelligence Transformation"
+    - "Digital Transformation"
+    - "Transformation Lead"
+    - "Transformation Manager"
+    - "Solutions Architect"
+    - "Solutions Consultant"
+    - "Solutions Delivery"
+    - "Delivery Lead"
+    - "Delivery Manager"
+    - "Programme Delivery"
+    - "Program Delivery"
+    - "Customer AI"
+    - "GenAI"
+    - "word:AI"
+    - "Associate Director"
+    - "Senior Manager"
+    # Secondary — MarTech / measurement / analytics (still in scope)
+    - "Marketing Analytics"
+    - "Marketing Science"
+    - "Measurement"
+    - "MarTech"
+    - "Martech"
+    - "Marketing Technology"
+    - "Customer Analytics"
+    - "Customer Value"
+    - "CVM"
+    - "CDP"
+    - "Tealium"
+    - "Tagging"
+    - "MMM"
+    - "Mix Modelling"
+    - "Mix Modeling"
+    - "Meridian"
+    - "Data Analytics"
+    - "Analytics Lead"
+    - "Analytics Manager"
+  negative:
+    - "word:Intern"
+    - "word:Interns"
+    - "Internship"
+    - "Graduate"
+    - "Junior"
+    - "Media Planner"
+    - "Media Planning"
+    - "word:CFO"
+    - "Accountant"
+    - "Bookkeeper"
+
+# LinkedIn: paste URL into inbox. eFinancialCareers: secondary paste-only (demoted from primary).
+# eCareer HK (CSB Government Vacancies): paste-only — see job_boards seed entry (enabled: false).
+# LinkedIn later: OpenCLI on an agent-only account — never the main profile.
+
+tracked_companies:
+  # -- Banks (official career pages; JobsDB misses many FS seats) --
+  - name: HSBC
+    careers_url: https://apply.careers.hsbc.com
+    scan_method: websearch
+    scan_query: 'site:apply.careers.hsbc.com Hong Kong "AI transformation" OR solutions OR delivery OR "digital transformation" OR analytics OR MarTech'
+    notes: "Hang Seng applications also live on this portal. In-house preferred."
+    enabled: true
+
+  - name: Hang Seng
+    careers_url: https://apply.careers.hsbc.com
+    scan_method: websearch
+    scan_query: 'site:apply.careers.hsbc.com "Hang Seng" Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Apply via HSBC portal."
+    enabled: true
+
+  - name: Standard Chartered
+    careers_url: https://jobs.standardchartered.com
+    scan_method: websearch
+    scan_query: 'site:jobs.standardchartered.com Hong Kong "digital transformation" OR solutions OR analytics OR MarTech'
+    notes: "Official HTML often cookie-walled. Human browser later."
+    enabled: true
+
+  - name: BOCHK
+    careers_url: https://careers.pageuppeople.com/798/cw/en/listing/
+    scan_method: websearch
+    scan_query: 'site:careers.pageuppeople.com/798/cw Hong Kong AI OR solutions OR "digital transformation" OR analytics'
+    notes: "PageUp. Highest-yield bank board in the 2026-08-28 public scan."
+    enabled: true
+
+  - name: Citi
+    careers_url: https://jobs.citi.com
+    scan_method: websearch
+    scan_query: 'site:jobs.citi.com Hong Kong AI OR solutions OR delivery OR MarTech OR analytics'
+    enabled: true
+
+  - name: JPMorgan
+    careers_url: https://jpmc.fa.oraclecloud.com
+    scan_method: websearch
+    scan_query: 'site:jpmc.fa.oraclecloud.com Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Oracle CX. Public fetch often a privacy shell."
+    enabled: true
+
+  # -- Insurers --
+  - name: Manulife
+    careers_url: https://careers.manulife.com/global/en/hong-kong
+    scan_method: websearch
+    scan_query: 'site:careers.manulife.com Hong Kong AI OR "digital transformation" OR analytics OR MarTech'
+    enabled: true
+
+  - name: AIA
+    careers_url: https://careers.aia.com
+    scan_method: websearch
+    scan_query: 'site:careers.aia.com Hong Kong "Customer AI" OR solutions OR analytics OR MarTech'
+    notes: "Workday branded page has been 404. Re-check in a human browser."
+    enabled: true
+
+  - name: AXA Hong Kong
+    careers_url: https://jobs.axa.com
+    scan_method: websearch
+    scan_query: 'site:jobs.axa.com Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Public fetch returned 403. Do not bypass WAF."
+    enabled: true
+
+  - name: Prudential
+    careers_url: https://wd3.myworkdayjobs.com/prudentialcareers
+    scan_method: websearch
+    scan_query: 'site:myworkdayjobs.com prudential Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Workday often JS-empty to HTTP fetch."
+    enabled: true
+
+  - name: FWD
+    careers_url: https://www.fwd.com.hk/en/careers/
+    scan_method: websearch
+    scan_query: 'site:fwd.com Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "WAF on branded page. Do not bypass."
+    enabled: true
+
+  - name: Sun Life
+    careers_url: https://sunlife.wd3.myworkdayjobs.com
+    scan_method: websearch
+    scan_query: 'site:myworkdayjobs.com "Sun Life" Hong Kong AI OR analytics OR marketing'
+    notes: "Workday often JS-empty to HTTP fetch."
+    enabled: true
+
+  - name: BOC Life
+    careers_url: https://careers.pageuppeople.com/798/cg/en/listing/
+    scan_method: websearch
+    scan_query: 'site:careers.pageuppeople.com/798/cg Hong Kong AI OR solutions OR analytics'
+    enabled: true
+
+  # -- Big 4 (example boards; agency_filter can demote them) --
+  - name: Deloitte
+    careers_url: https://jobs.deloitte.com
+    scan_method: websearch
+    scan_query: 'site:jobs.deloitte.com Hong Kong "AI" OR "digital transformation" OR solutions OR analytics OR MarTech'
+    enabled: true
+
+  - name: PwC
+    careers_url: https://www.pwc.com/gx/en/careers.html
+    scan_method: websearch
+    scan_query: 'site:pwc.com Hong Kong careers AI OR "digital transformation" OR solutions OR analytics'
+    enabled: true
+
+  - name: EY
+    careers_url: https://www.ey.com/en_hk/careers
+    scan_method: websearch
+    scan_query: 'site:ey.com Hong Kong careers AI OR "digital transformation" OR solutions OR analytics'
+    enabled: true
+
+  - name: KPMG
+    careers_url: https://kpmg.com/cn/en/home/careers.html
+    scan_method: websearch
+    scan_query: 'site:kpmg.com Hong Kong careers AI OR "digital transformation" OR solutions OR analytics'
+    enabled: true
+
+  # -- Recruiter public listing watch only. No login scrape. Agency = evaluate if clearly AI. --
+  - name: Michael Page
+    careers_url: https://www.michaelpage.com.hk/jobs/data-analytics
+    scan_method: websearch
+    scan_query: 'site:michaelpage.com.hk Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Public listing watch only. Compare ads with your own salary floor."
+    enabled: true
+
+  - name: Hays
+    careers_url: https://www.hays.com.hk/job-search
+    scan_method: websearch
+    scan_query: 'site:hays.com.hk Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Public listing watch only."
+    enabled: true
+
+  - name: Robert Walters
+    careers_url: https://www.robertwalters.com.hk/jobs
+    scan_method: websearch
+    scan_query: 'site:robertwalters.com.hk Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "PerimeterX on HTML fetch. Human browser later. No bypass."
+    enabled: true
+
+  - name: Morgan McKinley
+    careers_url: https://morganmckinley.com/hk/jobs
+    scan_method: websearch
+    scan_query: 'site:morganmckinley.com/hk Hong Kong AI OR solutions OR CVM OR MarTech'
+    notes: "Public listing watch only."
+    enabled: true
+
+  - name: Randstad
+    careers_url: https://www.randstad.com.hk
+    scan_method: websearch
+    scan_query: 'site:randstad.com.hk Hong Kong AI OR data analytics OR solutions'
+    notes: "Public listing watch only."
+    enabled: true
+
+  - name: Ambition
+    careers_url: https://www.ambition.com.hk
+    scan_method: websearch
+    scan_query: 'site:ambition.com.hk Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Public listing watch only."
+    enabled: true
+
+  - name: Oliver James
+    careers_url: https://www.oliverjames.com
+    scan_method: websearch
+    scan_query: 'site:oliverjames.com Hong Kong AI OR solutions OR analytics OR MarTech'
+    notes: "Public listing watch only."
+    enabled: true
+
+  # -- eCareer HK (CSB) — documentation anchor; paste URLs into inbox; no HTTP provider --
+  - name: eCareer HK (CSB Government Vacancies)
+    careers_url: https://csboa.csb.gov.hk/csboa/joa/JVE_001_search.action
+    scan_method: websearch
+    scan_query: 'site:csb.gov.hk Hong Kong AI OR analytics OR "digital transformation"'
+    notes: "Paste-only primary portal alongside LinkedIn/JobsDB. Do not add automated CSB fetch until approved."
+    enabled: false
+
+job_boards:
+  - name: JobsDB HK — AI transformation & digital
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: '"AI transformation" OR "digital transformation" OR "transformation lead"'
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+    notes: "SEEK v5 public API. Zero login. HK location_filter applies."
+
+  - name: JobsDB HK — solutions & delivery
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: 'solutions OR "delivery manager" OR "delivery lead" OR "programme delivery"'
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+
+  - name: JobsDB HK — customer AI & GenAI
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: '"customer AI" OR GenAI OR "artificial intelligence"'
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+
+  - name: JobsDB HK — MarTech (secondary)
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: "MarTech OR CDP OR tagging OR Tealium"
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+
+  - name: JobsDB HK — measurement (secondary)
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: "marketing measurement OR MMM OR mix modelling OR analytics"
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+
+  - name: JobsDB HK — data analytics (secondary)
+    provider: jobstreet
+    api: https://hk.jobsdb.com/api/jobsearch/v5/search
+    siteKey: HK-Main
+    searchKeywords: "data analytics OR marketing analytics"
+    searchLocation: "Hong Kong"
+    pageSize: 30
+    maxPages: 3
+    enabled: true
+    notes: "Broad lane. Title filter and your salary_filter.min still apply. JobsDB totals miss some career-page seats."
